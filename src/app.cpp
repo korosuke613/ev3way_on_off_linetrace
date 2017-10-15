@@ -11,6 +11,7 @@
 #include "ev3api.h"
 #include "app.h"
 #include "balancer.h"
+#include "util.h"
 
 #if defined(BUILD_MODULE)
 #include "module_cfg.h"
@@ -51,7 +52,7 @@ static FILE     *bt = NULL;     /* Bluetoothファイルハンドル */
 /* sample_c2マクロ */
 #define SONAR_ALERT_DISTANCE 30 /* 超音波センサによる障害物検知距離[cm] */
 /* sample_c3マクロ */
-#define TAIL_ANGLE_STAND_UP  93 /* 完全停止時の角度[度] */
+#define TAIL_ANGLE_STAND_UP  91 /* 完全停止時の角度[度] */
 #define TAIL_ANGLE_DRIVE      3 /* バランス走行時の角度[度] */
 #define P_GAIN             2.5F /* 完全停止用モータ制御比例係数 */
 #define PWM_ABS_MAX          60 /* 完全停止用モータ制御PWM絶対最大値 */
@@ -78,10 +79,12 @@ void main_task(intptr_t unused)
     signed char forward;      /* 前後進命令 */
     signed char turn;         /* 旋回命令 */
     signed char pwm_L, pwm_R; /* 左右モータPWM出力 */
-
+    char msg[32];
+    int brightness;
+    
     /* LCD画面表示 */
-    ev3_lcd_fill_rect(0, 0, EV3_LCD_WIDTH, EV3_LCD_HEIGHT, EV3_LCD_WHITE);
-    ev3_lcd_draw_string("EV3way-ET sample_c4", 0, CALIB_FONT_HEIGHT*1);
+    //ev3_lcd_fill_rect(0, 0, EV3_LCD_WIDTH, EV3_LCD_HEIGHT, EV3_LCD_WHITE);
+    //msg_f("EV3way-ET Kat-Lab", 0);
 
     /* センサー入力ポートの設定 */
     ev3_sensor_config(sonar_sensor, ULTRASONIC_SENSOR);
@@ -101,13 +104,38 @@ void main_task(intptr_t unused)
 
     /* Bluetooth通信タスクの起動 */
     act_tsk(BT_TASK);
+    
+    /* 片山先生のお顔 */
+    memfile_t memfile_img;
+    ev3_memfile_load("/ev3rt/res/katayama.bmp", &memfile_img);
+    memfile_t memfile_wav;
+    ev3_memfile_load("/ev3rt/res/dorakue.wav", &memfile_wav);
+    image_t image;
+    ev3_image_load(&memfile_img, &image);
+    ev3_lcd_draw_image(&image, 0, 0);
+    ev3_speaker_set_volume(10);
+    ev3_speaker_play_file(&memfile_wav, SOUND_MANUAL_STOP);
 
     ev3_led_set_color(LED_ORANGE); /* 初期化完了通知 */
 
+    int buff = 0;
     /* スタート待機 */
     while(1)
     {
-        tail_control(TAIL_ANGLE_STAND_UP); /* 完全停止用角度に制御 */
+        tail_control(TAIL_ANGLE_STAND_UP + buff); /* 完全停止用角度に制御 */
+
+        sprintf(msg, "Tail_Angle: %d", TAIL_ANGLE_STAND_UP + buff);
+        msg_f(msg, 0);  
+
+        if(ev3_button_is_pressed(LEFT_BUTTON)){
+            buff--;
+            tslp_tsk(500); /* 500msecウェイト */
+        }
+
+        if(ev3_button_is_pressed(RIGHT_BUTTON)){
+            buff++;
+            tslp_tsk(500); /* 500msecウェイト */            
+        }
 
         if (bt_cmd == 1)
         {
@@ -118,7 +146,6 @@ void main_task(intptr_t unused)
         {
             break; /* タッチセンサが押された */
         }
-
         tslp_tsk(10); /* 10msecウェイト */
     }
 
@@ -135,23 +162,26 @@ void main_task(intptr_t unused)
     /**
     * Main loop for the self-balance control algorithm
     */
+    bool isSonerAlert = false;    
     while(1)
     {
         int32_t motor_ang_l, motor_ang_r;
         int gyro, volt;
-
         if (ev3_button_is_pressed(BACK_BUTTON)) break;
 
         tail_control(TAIL_ANGLE_DRIVE); /* バランス走行用角度に制御 */
 
         if (sonar_alert() == 1) /* 障害物検知 */
         {
+            if(isSonerAlert == false)ev3_speaker_play_tone (NOTE_FS6, 100);
+            isSonerAlert = true;
             forward = turn = 0; /* 障害物を検知したら停止 */
         }
         else
         {
             forward = 30; /* 前進命令 */
-            if (ev3_color_sensor_get_reflect(color_sensor) >= (LIGHT_WHITE + LIGHT_BLACK)/2)
+            brightness = ev3_color_sensor_get_reflect(color_sensor);
+            if (brightness >= (LIGHT_WHITE + LIGHT_BLACK)/2)
             {
                 turn =  20; /* 左旋回命令 */
             }
@@ -159,6 +189,10 @@ void main_task(intptr_t unused)
             {
                 turn = -20; /* 右旋回命令 */
             }
+            if(isSonerAlert == true)ev3_speaker_play_tone (NOTE_GS6, 100);            
+            isSonerAlert = false;
+            sprintf(msg, "Brightness: %d", brightness);
+            //msg_f(msg, 3);  
         }
 
         /* 倒立振子制御API に渡すパラメータを取得する */
@@ -217,6 +251,7 @@ static int sonar_alert(void)
     static int alert = 0;
 
     signed int distance;
+    char msg[32];
 
     if (++counter == 40/4) /* 約40msec周期毎に障害物検知  */
     {
@@ -226,6 +261,9 @@ static int sonar_alert(void)
          * EV3の場合は、要確認
          */
         distance = ev3_ultrasonic_sensor_get_distance(sonar_sensor);
+        sprintf(msg, "Soner: %d", distance);
+        //msg_f(msg, 2);
+        
         if ((distance <= SONAR_ALERT_DISTANCE) && (distance >= 0))
         {
             alert = 1; /* 障害物を検知 */
