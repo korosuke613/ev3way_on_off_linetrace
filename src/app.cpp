@@ -12,6 +12,7 @@
 #include "app.h"
 #include "balancer.h"
 #include "util.h"
+#include "setting.h"
 
 #if defined(BUILD_MODULE)
 #include "module_cfg.h"
@@ -44,32 +45,11 @@ static const motor_port_t
 static int      bt_cmd = 0;     /* Bluetoothコマンド 1:リモートスタート */
 static FILE     *bt = NULL;     /* Bluetoothファイルハンドル */
 
-/* 下記のマクロは個体/環境に合わせて変更する必要があります */
-/* sample_c1マクロ */
-#define GYRO_OFFSET  0          /* ジャイロセンサオフセット値(角速度0[deg/sec]時) */
-#define LIGHT_WHITE  40         /* 白色の光センサ値 */
-#define LIGHT_BLACK  0          /* 黒色の光センサ値 */
-/* sample_c2マクロ */
-#define SONAR_ALERT_DISTANCE 30 /* 超音波センサによる障害物検知距離[cm] */
-/* sample_c3マクロ */
-#define TAIL_ANGLE_STAND_UP  91 /* 完全停止時の角度[度] */
-#define TAIL_ANGLE_DRIVE      3 /* バランス走行時の角度[度] */
-#define P_GAIN             2.5F /* 完全停止用モータ制御比例係数 */
-#define PWM_ABS_MAX          60 /* 完全停止用モータ制御PWM絶対最大値 */
-/* sample_c4マクロ */
-//#define DEVICE_NAME     "ET0"  /* Bluetooth名 hrp2/target/ev3.h BLUETOOTH_LOCAL_NAMEで設定 */
-//#define PASS_KEY        "1234" /* パスキー    hrp2/target/ev3.h BLUETOOTH_PIN_CODEで設定 */
-#define CMD_START         '1'    /* リモートスタートコマンド */
-
-/* LCDフォントサイズ */
-#define CALIB_FONT (EV3_FONT_SMALL)
-#define CALIB_FONT_WIDTH (6/*TODO: magic number*/)
-#define CALIB_FONT_HEIGHT (8/*TODO: magic number*/)
-
 /* 関数プロトタイプ宣言 */
 static int sonar_alert(void);
 static void tail_control(signed int angle);
-
+void setLineTracePwm(const int& brightness_, signed char& forward_, signed char& turn_);
+    
 #include "BalancerCpp.h"        // <1>
 Balancer balancer;              // <1>
 
@@ -80,11 +60,7 @@ void main_task(intptr_t unused)
     signed char turn;         /* 旋回命令 */
     signed char pwm_L, pwm_R; /* 左右モータPWM出力 */
     char msg[32];
-    int brightness;
-    
-    /* LCD画面表示 */
-    //ev3_lcd_fill_rect(0, 0, EV3_LCD_WIDTH, EV3_LCD_HEIGHT, EV3_LCD_WHITE);
-    //msg_f("EV3way-ET Kat-Lab", 0);
+    int brightness; /* 地面の明るさ */
 
     /* センサー入力ポートの設定 */
     ev3_sensor_config(sonar_sensor, ULTRASONIC_SENSOR);
@@ -105,6 +81,8 @@ void main_task(intptr_t unused)
     /* Bluetooth通信タスクの起動 */
     act_tsk(BT_TASK);
     
+
+#if 1 /* 片山先生がいなければ0にする */
     /* 片山先生のお顔 */
     memfile_t memfile_img;
     ev3_memfile_load("/ev3rt/res/katayama.bmp", &memfile_img);
@@ -115,6 +93,7 @@ void main_task(intptr_t unused)
     ev3_lcd_draw_image(&image, 0, 0);
     ev3_speaker_set_volume(10);
     ev3_speaker_play_file(&memfile_wav, SOUND_MANUAL_STOP);
+#endif
 
     ev3_led_set_color(LED_ORANGE); /* 初期化完了通知 */
 
@@ -179,19 +158,14 @@ void main_task(intptr_t unused)
         }
         else
         {
-            forward = 30; /* 前進命令 */
-            brightness = ev3_color_sensor_get_reflect(color_sensor);
-            if (brightness >= (LIGHT_WHITE + LIGHT_BLACK)/2)
-            {
-                turn =  20; /* 左旋回命令 */
-            }
-            else
-            {
-                turn = -20; /* 右旋回命令 */
-            }
+            brightness = ev3_color_sensor_get_reflect(color_sensor);            
+
+            setLineTracePwm(brightness, forward, turn); /* 前後進命令, 旋回命令の設定 */
+
             if(isSonerAlert == true)ev3_speaker_play_tone (NOTE_GS6, 100);            
             isSonerAlert = false;
-            sprintf(msg, "Brightness: %d", brightness);
+            /* LCDに光センサの明るさ値を出力する */
+            //sprintf(msg, "Brightness: %d", brightness);
             //msg_f(msg, 3);  
         }
 
@@ -328,5 +302,23 @@ void bt_task(intptr_t unused)
             break;
         }
         fputc(c, bt); /* エコーバック */
+    }
+}
+
+//*****************************************************************************
+// 関数名 : setLineTracePwm
+// 引数 : brightness_ : ev3_color_sensor_get_reflect()の結果
+// 　　 : forward_ : 前後進命令の変数
+// 　　 : turn_ : 旋回命令の変数
+// 返り値 : なし
+// 概要 : Bluetooth通信によるリモートスタート。 Tera Termなどのターミナルソフトから、
+//       ASCIIコードで1を送信すると、リモートスタートする。
+//*****************************************************************************
+void setLineTracePwm(const int& brightness_, signed char& forward_, signed char& turn_){
+    forward_ = 30; /* 前進命令 */
+    if(brightness_ >= (LIGHT_WHITE + LIGHT_BLACK)/2){
+        turn_ =  20; /* 左旋回命令 */
+    }else{
+        turn_ = -20; /* 右旋回命令 */
     }
 }
