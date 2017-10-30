@@ -27,26 +27,26 @@
  **/
 /**
  ******************************************************************************
- **	ƒtƒ@ƒCƒ‹–¼ : balancer.c
+ **	ï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½ï¿½ : balancer.c
  **
- **	ŠT—v       : 2—ÖŒ^“|—§UŽqƒƒ{ƒbƒguNXTway-GSvƒoƒ‰ƒ“ƒX§ŒäƒvƒƒOƒ‰ƒ€
- **              NXTway-GS‚Ìƒoƒ‰ƒ“ƒX§Œä‚É‚ÍAƒT[ƒ{§Œä(ó‘Ô + Ï•ªƒtƒB[ƒhƒoƒbƒN)
- **              ‚Æ‚¢‚¤Œ»‘ã§Œä‚ð“K—p‚µ‚Ä‚¢‚Ü‚·B§Œä‘ÎÛ‚Ì“¯’è‚¨‚æ‚Ñ§ŒäŠí‚ÌŠJ”­
- **              ‚É‚ÍThe MathWorksŽÐ‚ÌMATLAB&Simulink‚Æ‚¢‚¤»•i‚ðŽg—p‚µ‚½A
- **              MBD(ƒ‚ƒfƒ‹ƒx[ƒXƒfƒUƒCƒ“/ŠJ”­)ŠJ”­Žè–@‚ð—p‚¢‚Ä‚¢‚Ü‚·B‚±‚ÌCƒvƒƒOƒ‰ƒ€‚Í
- **              Simulinkƒ‚ƒfƒ‹‚©‚çReal-Time Workshop Embedded CoderƒR[ƒh¶¬•W€‹@”\‚ð
- **              Žg—p‚µ‚ÄŽ©“®¶¬‚³‚ê‚½‚à‚Ì‚Å‚·Bƒoƒ‰ƒ“ƒX§ŒäŠí‚Ì§Œäƒpƒ‰ƒ[ƒ^‚É‚Â‚¢‚Ä‚Í
- **              ƒ†[ƒU[ƒnƒ“ƒhƒR[ƒh‘¤‚Å’è‹`‚·‚é•K—v‚ª‚ ‚è‚Ü‚·B’è‹`—á‚Æ‚µ‚ÄA
- **              nxtOSEK\samples\nxtway_gs\balancer_param.c‚ðŽQÆ‚µ‚Ä‚­‚¾‚³‚¢B
- **              ƒoƒ‰ƒ“ƒX§ŒäƒAƒ‹ƒSƒŠƒYƒ€‚ÌÚ×î•ñ‚É‚Â‚«‚Ü‚µ‚Ä‚Í
- **                “ú–{Œê: http://www.cybernet.co.jp/matlab/library/library/detail.php?id=TA060
- **                ‰pŒê  : http://www.mathworks.com/matlabcentral/fileexchange/loadFile.do?objectId=19147&objectType=file
- **              ‚ðŽQÆ‚µ‚Ä‚­‚¾‚³‚¢B
+ **	ï¿½Tï¿½v       : 2ï¿½ÖŒ^ï¿½|ï¿½ï¿½ï¿½Uï¿½qï¿½ï¿½ï¿½{ï¿½bï¿½gï¿½uNXTway-GSï¿½vï¿½oï¿½ï¿½ï¿½ï¿½ï¿½Xï¿½ï¿½ï¿½ï¿½vï¿½ï¿½ï¿½Oï¿½ï¿½ï¿½ï¿½
+ **              NXTway-GSï¿½Ìƒoï¿½ï¿½ï¿½ï¿½ï¿½Xï¿½ï¿½ï¿½ï¿½É‚ÍAï¿½Tï¿½[ï¿½{ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ + ï¿½Ï•ï¿½ï¿½tï¿½Bï¿½[ï¿½hï¿½oï¿½bï¿½N)
+ **              ï¿½Æ‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ã§ï¿½ï¿½ï¿½Kï¿½pï¿½ï¿½ï¿½Ä‚ï¿½ï¿½Ü‚ï¿½ï¿½Bï¿½ï¿½ï¿½ï¿½ÎÛ‚Ì“ï¿½ï¿½è‚¨ï¿½ï¿½Ñï¿½ï¿½ï¿½ï¿½ÌŠJï¿½ï¿½
+ **              ï¿½É‚ï¿½The MathWorksï¿½Ð‚ï¿½MATLAB&Simulinkï¿½Æ‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½iï¿½ï¿½gï¿½pï¿½ï¿½ï¿½ï¿½ï¿½A
+ **              MBD(ï¿½ï¿½ï¿½fï¿½ï¿½ï¿½xï¿½[ï¿½Xï¿½fï¿½Uï¿½Cï¿½ï¿½/ï¿½Jï¿½ï¿½)ï¿½Jï¿½ï¿½ï¿½ï¿½@ï¿½ï¿½pï¿½ï¿½ï¿½Ä‚ï¿½ï¿½Ü‚ï¿½ï¿½Bï¿½ï¿½ï¿½ï¿½Cï¿½vï¿½ï¿½ï¿½Oï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+ **              Simulinkï¿½ï¿½ï¿½fï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Real-Time Workshop Embedded Coderï¿½Rï¿½[ï¿½hï¿½ï¿½ï¿½ï¿½ï¿½Wï¿½ï¿½ï¿½@ï¿½\ï¿½ï¿½
+ **              ï¿½gï¿½pï¿½ï¿½ï¿½ÄŽï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ê‚½ï¿½ï¿½Ì‚Å‚ï¿½ï¿½Bï¿½oï¿½ï¿½ï¿½ï¿½ï¿½Xï¿½ï¿½ï¿½ï¿½ï¿½Ìï¿½ï¿½ï¿½pï¿½ï¿½ï¿½ï¿½ï¿½[ï¿½^ï¿½É‚Â‚ï¿½ï¿½Ä‚ï¿½
+ **              ï¿½ï¿½ï¿½[ï¿½Uï¿½[ï¿½nï¿½ï¿½ï¿½hï¿½Rï¿½[ï¿½hï¿½ï¿½ï¿½Å’ï¿½`ï¿½ï¿½ï¿½ï¿½Kï¿½vï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ü‚ï¿½ï¿½Bï¿½ï¿½`ï¿½ï¿½Æ‚ï¿½ï¿½ÄA
+ **              nxtOSEK\samples\nxtway_gs\balancer_param.cï¿½ï¿½Qï¿½Æ‚ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½B
+ **              ï¿½oï¿½ï¿½ï¿½ï¿½ï¿½Xï¿½ï¿½ï¿½ï¿½Aï¿½ï¿½ï¿½Sï¿½ï¿½ï¿½Yï¿½ï¿½ï¿½ÌÚ×ï¿½ï¿½É‚Â‚ï¿½ï¿½Ü‚ï¿½ï¿½Ä‚ï¿½
+ **                ï¿½ï¿½ï¿½{ï¿½ï¿½: http://www.cybernet.co.jp/matlab/library/library/detail.php?id=TA060
+ **                ï¿½pï¿½ï¿½  : http://www.mathworks.com/matlabcentral/fileexchange/loadFile.do?objectId=19147&objectType=file
+ **              ï¿½ï¿½Qï¿½Æ‚ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½B
  **
- ** ƒ‚ƒfƒ‹ŠÖ˜Aî•ñ:
- **   ƒ‚ƒfƒ‹–¼   : balancer.mdl
- **   ƒo[ƒWƒ‡ƒ“ : 1.893
- **   —š—ð       :  -
+ ** ï¿½ï¿½ï¿½fï¿½ï¿½ï¿½Ö˜Aï¿½ï¿½ï¿½:
+ **   ï¿½ï¿½ï¿½fï¿½ï¿½ï¿½ï¿½   : balancer.mdl
+ **   ï¿½oï¿½[ï¿½Wï¿½ï¿½ï¿½ï¿½ : 1.893
+ **   ï¿½ï¿½ï¿½ï¿½       :  -
  **                 -
  **
  ** Copyright (c) 2009-2016 MathWorks, Inc.
@@ -64,11 +64,11 @@
 /*============================================================================
  * Data definitions
  *===========================================================================*/
-static float ud_err_theta;          /* ¶‰EŽÔ—Ö‚Ì•½‹Ï‰ñ“]Šp“x(ƒÆ)–Ú•WŒë·ó‘Ô’l */
-static float ud_psi;                /* ŽÔ‘Ìƒsƒbƒ`Šp“x(ƒÕ)ó‘Ô’l */
-static float ud_theta_lpf;          /* ¶‰EŽÔ—Ö‚Ì•½‹Ï‰ñ“]Šp“x(ƒÆ)ó‘Ô’l */
-static float ud_theta_ref;          /* ¶‰EŽÔ—Ö‚Ì–Ú•W•½‹Ï‰ñ“]Šp“x(ƒÆ)ó‘Ô’l */
-static float ud_thetadot_cmd_lpf;   /* ¶‰EŽÔ—Ö‚Ì–Ú•W•½‹Ï‰ñ“]Šp‘¬“x(dƒÆ/dt)ó‘Ô’l */
+static float ud_err_theta;          /* ï¿½ï¿½ï¿½Eï¿½Ô—Ö‚Ì•ï¿½ï¿½Ï‰ï¿½]ï¿½pï¿½x(ï¿½ï¿½)ï¿½Ú•Wï¿½ë·ï¿½ï¿½Ô’l */
+static float ud_psi;                /* ï¿½Ô‘Ìƒsï¿½bï¿½`ï¿½pï¿½x(ï¿½ï¿½)ï¿½ï¿½Ô’l */
+static float ud_theta_lpf;          /* ï¿½ï¿½ï¿½Eï¿½Ô—Ö‚Ì•ï¿½ï¿½Ï‰ï¿½]ï¿½pï¿½x(ï¿½ï¿½)ï¿½ï¿½Ô’l */
+static float ud_theta_ref;          /* ï¿½ï¿½ï¿½Eï¿½Ô—Ö‚Ì–Ú•Wï¿½ï¿½ï¿½Ï‰ï¿½]ï¿½pï¿½x(ï¿½ï¿½)ï¿½ï¿½Ô’l */
+static float ud_thetadot_cmd_lpf;   /* ï¿½ï¿½ï¿½Eï¿½Ô—Ö‚Ì–Ú•Wï¿½ï¿½ï¿½Ï‰ï¿½]ï¿½pï¿½ï¿½ï¿½x(dï¿½ï¿½/dt)ï¿½ï¿½Ô’l */
 
 /*============================================================================
  * Functions
@@ -122,51 +122,51 @@ static float ud_thetadot_cmd_lpf;   /* ¶‰EŽÔ—Ö‚Ì–Ú•W•½‹Ï‰ñ“]Šp‘¬“x(dƒÆ/dt)ó‘Ô’
 //*****************************************************************************
 
 //*****************************************************************************
-// ŠÖ”–¼  : balance_control
-// ˆø”    :
-//   (float)args_cmd_forward : ‘Oi/Œãi–½—ßB100(‘OiÅ‘å’l)`-100(ŒãiÅ‘å’l)
-//   (float)args_cmd_turn    : ù‰ñ–½—ßB100(‰Eù‰ñÅ‘å’l)`-100(¶ù‰ñÅ‘å’l)
-//   (float)args_gyro        : ƒWƒƒƒCƒƒZƒ“ƒT’l
-//   (float)args_gyro_offset : ƒWƒƒƒCƒƒZƒ“ƒTƒIƒtƒZƒbƒg’l
-//   (float)args_theta_m_l   : ¶ƒ‚[ƒ^ƒGƒ“ƒR[ƒ_’l
-//   (float)args_theta_m_r   : ‰Eƒ‚[ƒ^ƒGƒ“ƒR[ƒ_’l
-//   (float)args_battery     : ƒoƒbƒeƒŠ“dˆ³’l(mV)
-// –ß‚è’l  :
-//   (char*)ret_pwm_l        : ¶ƒ‚[ƒ^PWMo—Í’l
-//   (char*)ret_pwm_r        : ‰Eƒ‚[ƒ^PWMo—Í’l
-// ŠT—v    :  NXTway-GSƒoƒ‰ƒ“ƒX§ŒäŠÖ”B
-//            ‚±‚ÌŠÖ”‚Í4msecŽüŠú‚Å‹N“®‚³‚ê‚é‚±‚Æ‚ð‘O’ñ‚ÉÝŒv‚³‚ê‚Ä‚¢‚Ü‚·B
-//            ‚È‚¨AƒWƒƒƒCƒƒZƒ“ƒTƒIƒtƒZƒbƒg’l‚ÍƒZƒ“ƒTŒÂ‘Ì‚¨‚æ‚Ñ’Ê“d‚É‚æ‚éƒhƒŠƒtƒg
-//            ‚ð”º‚¢‚Ü‚·‚Ì‚ÅA“K‹X•â³‚·‚é•K—v‚ª‚ ‚è‚Ü‚·B‚Ü‚½A¶‰E‚ÌŽÔ—Ö‹ì“®
-//            ƒ‚[ƒ^‚ÍŒÂ‘Ì·‚É‚æ‚èA“¯‚¶PWMo—Í‚ð—^‚¦‚Ä‚à‰ñ“]”‚ªˆÙ‚È‚éê‡‚ª
-//            ‚ ‚è‚Ü‚·B‚»‚Ìê‡‚Í•Ê“r•â³‹@”\‚ð’Ç‰Á‚·‚é•K—v‚ª‚ ‚è‚Ü‚·B
-// Žg—p—á  :
-//        /* Å‚‘¬’¼i–½—ß */
+// ï¿½Öï¿½ï¿½ï¿½  : balance_control
+// ï¿½ï¿½ï¿½ï¿½    :
+//   (float)args_cmd_forward : ï¿½Oï¿½i/ï¿½ï¿½iï¿½ï¿½ï¿½ßB100(ï¿½Oï¿½iï¿½Å‘ï¿½l)ï¿½`-100(ï¿½ï¿½iï¿½Å‘ï¿½l)
+//   (float)args_cmd_turn    : ï¿½ï¿½ï¿½ñ–½—ßB100(ï¿½Eï¿½ï¿½ï¿½ï¿½Å‘ï¿½l)ï¿½`-100(ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Å‘ï¿½l)
+//   (float)args_gyro        : ï¿½Wï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½Zï¿½ï¿½ï¿½Tï¿½l
+//   (float)args_gyro_offset : ï¿½Wï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½Zï¿½ï¿½ï¿½Tï¿½Iï¿½tï¿½Zï¿½bï¿½gï¿½l
+//   (float)args_theta_m_l   : ï¿½ï¿½ï¿½ï¿½ï¿½[ï¿½^ï¿½Gï¿½ï¿½ï¿½Rï¿½[ï¿½_ï¿½l
+//   (float)args_theta_m_r   : ï¿½Eï¿½ï¿½ï¿½[ï¿½^ï¿½Gï¿½ï¿½ï¿½Rï¿½[ï¿½_ï¿½l
+//   (float)args_battery     : ï¿½oï¿½bï¿½eï¿½ï¿½ï¿½dï¿½ï¿½ï¿½l(mV)
+// ï¿½ß‚ï¿½l  :
+//   (char*)ret_pwm_l        : ï¿½ï¿½ï¿½ï¿½ï¿½[ï¿½^PWMï¿½oï¿½Í’l
+//   (char*)ret_pwm_r        : ï¿½Eï¿½ï¿½ï¿½[ï¿½^PWMï¿½oï¿½Í’l
+// ï¿½Tï¿½v    :  NXTway-GSï¿½oï¿½ï¿½ï¿½ï¿½ï¿½Xï¿½ï¿½ï¿½ï¿½Öï¿½ï¿½B
+//            ï¿½ï¿½ï¿½ÌŠÖï¿½ï¿½ï¿½4msecï¿½ï¿½ï¿½ï¿½ï¿½Å‹Nï¿½ï¿½ï¿½ï¿½ï¿½ï¿½é‚±ï¿½Æ‚ï¿½Oï¿½ï¿½ÉÝŒvï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½Ü‚ï¿½ï¿½B
+//            ï¿½È‚ï¿½ï¿½Aï¿½Wï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½Zï¿½ï¿½ï¿½Tï¿½Iï¿½tï¿½Zï¿½bï¿½gï¿½lï¿½ÍƒZï¿½ï¿½ï¿½Tï¿½Â‘Ì‚ï¿½ï¿½ï¿½Ñ’Ê“dï¿½É‚ï¿½ï¿½hï¿½ï¿½ï¿½tï¿½g
+//            ï¿½ð”º‚ï¿½ï¿½Ü‚ï¿½ï¿½Ì‚ÅAï¿½Kï¿½Xï¿½â³ï¿½ï¿½ï¿½ï¿½Kï¿½vï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ü‚ï¿½ï¿½Bï¿½Ü‚ï¿½ï¿½Aï¿½ï¿½ï¿½Eï¿½ÌŽÔ—Ö‹ì“®
+//            ï¿½ï¿½ï¿½[ï¿½^ï¿½ÍŒÂ‘Ìï¿½ï¿½É‚ï¿½ï¿½Aï¿½ï¿½ï¿½ï¿½PWMï¿½oï¿½Í‚ï¿½^ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½]ï¿½ï¿½ï¿½ï¿½ï¿½Ù‚È‚ï¿½ê‡ï¿½ï¿½
+//            ï¿½ï¿½ï¿½ï¿½Ü‚ï¿½ï¿½Bï¿½ï¿½ï¿½Ìê‡ï¿½Í•Ê“rï¿½â³ï¿½@ï¿½\ï¿½ï¿½Ç‰ï¿½ï¿½ï¿½ï¿½ï¿½Kï¿½vï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ü‚ï¿½ï¿½B
+// ï¿½gï¿½pï¿½ï¿½  :
+//        /* ï¿½Åï¿½ï¿½ï¿½ï¿½ï¿½ï¿½iï¿½ï¿½ï¿½ï¿½ */
 //        balance_control(
-//          (float)100,                                  /* ‘OiÅ‚‘¬–½—ß */
-//          (float)0,                                    /* –³ù‰ñ–½—ß */
-//          (float)ecrobot_get_gyro_sensor(NXT_PORT_S4), /* ƒWƒƒƒCƒƒZƒ“ƒT’l */
-//          (float)605,                                  /* ŽÔ‘Ì’âŽ~Žž‚ÌƒWƒƒƒCƒƒZƒ“ƒT’l */
-//          (float)nxt_motor_get_count(NXT_PORT_C),      /* ¶ƒ‚[ƒ^ƒGƒ“ƒR[ƒ_’l */
-//          (float)nxt_motor_get_count(NXT_PORT_B),      /* ‰Eƒ‚[ƒ^ƒGƒ“ƒR[ƒ_’l */
-//          (float)ecrobot_get_battery_voltage(),        /* ƒoƒbƒeƒŠ“dˆ³’l(mV) */
-//          &pwm_l,                                    /* ¶ƒ‚[ƒ^PWMo—Í’l */
-//          &pwm_r);                                   /* ‰Eƒ‚[ƒ^PWMo—Í’l */
+//          (float)100,                                  /* ï¿½Oï¿½iï¿½Åï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ */
+//          (float)0,                                    /* ï¿½ï¿½ï¿½ï¿½ï¿½ñ–½—ï¿½ */
+//          (float)ecrobot_get_gyro_sensor(NXT_PORT_S4), /* ï¿½Wï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½Zï¿½ï¿½ï¿½Tï¿½l */
+//          (float)605,                                  /* ï¿½Ô‘Ì’ï¿½~ï¿½ï¿½ï¿½ÌƒWï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½Zï¿½ï¿½ï¿½Tï¿½l */
+//          (float)nxt_motor_get_count(NXT_PORT_C),      /* ï¿½ï¿½ï¿½ï¿½ï¿½[ï¿½^ï¿½Gï¿½ï¿½ï¿½Rï¿½[ï¿½_ï¿½l */
+//          (float)nxt_motor_get_count(NXT_PORT_B),      /* ï¿½Eï¿½ï¿½ï¿½[ï¿½^ï¿½Gï¿½ï¿½ï¿½Rï¿½[ï¿½_ï¿½l */
+//          (float)ecrobot_get_battery_voltage(),        /* ï¿½oï¿½bï¿½eï¿½ï¿½ï¿½dï¿½ï¿½ï¿½l(mV) */
+//          &pwm_l,                                    /* ï¿½ï¿½ï¿½ï¿½ï¿½[ï¿½^PWMï¿½oï¿½Í’l */
+//          &pwm_r);                                   /* ï¿½Eï¿½ï¿½ï¿½[ï¿½^PWMï¿½oï¿½Í’l */
 //*****************************************************************************
 //*****************************************************************************
-// ŠÖ”–¼  : balance_init
-// ˆø”    : –³‚µ
-// –ß‚è’l  : –³‚µ
-// ŠT—v    : NXTway-GSƒoƒ‰ƒ“ƒX§Œä‰Šú‰»ŠÖ”B“à•”ó‘Ô—Ê•Ï”‚ð‰Šú‰»‚µ‚Ü‚·B
-//           ‚±‚ÌŠÖ”‚É‚æ‚èƒoƒ‰ƒ“ƒX§Œä‹@”\‚ð‰Šú‰»‚·‚éê‡‚ÍA•¹‚¹‚Ä¶‰E‚Ì
-//           ŽÔ—Ö‹ì“®ƒ‚[ƒ^[‚ÌƒGƒ“ƒR[ƒ_’l‚ð0‚ÉƒŠƒZƒbƒg‚µ‚Ä‚­‚¾‚³‚¢B
-// Žg—p—á  :
-//		nxt_motor_set_speed(NXT_PORT_C, 0, 1); /* ¶ƒ‚[ƒ^’âŽ~ */
-//		nxt_motor_set_speed(NXT_PORT_B, 0, 1); /* ‰Eƒ‚[ƒ^’âŽ~ */
-//		balance_init();						   /* NXTway-GSƒoƒ‰ƒ“ƒX§Œä‰Šú‰» */
-//      /* ƒ‚[ƒ^ƒGƒ“ƒR[ƒ_’l‚ð0ƒŠƒZƒbƒg‚·‚é‘O‚Éƒ‚[ƒ^‚ª’âŽ~‚µ‚Ä‚¢‚é‚±‚Æ */
-//		nxt_motor_set_count(NXT_PORT_C, 0);    /* ¶ƒ‚[ƒ^ƒGƒ“ƒR[ƒ_0ƒŠƒZƒbƒg */
-//		nxt_motor_set_count(NXT_PORT_B, 0);    /* ‰Eƒ‚[ƒ^ƒGƒ“ƒR[ƒ_0ƒŠƒZƒbƒg */
+// ï¿½Öï¿½ï¿½ï¿½  : balance_init
+// ï¿½ï¿½ï¿½ï¿½    : ï¿½ï¿½ï¿½ï¿½
+// ï¿½ß‚ï¿½l  : ï¿½ï¿½ï¿½ï¿½
+// ï¿½Tï¿½v    : NXTway-GSï¿½oï¿½ï¿½ï¿½ï¿½ï¿½Xï¿½ï¿½ï¿½ä‰ï¿½ï¿½ï¿½ï¿½ï¿½Öï¿½ï¿½Bï¿½ï¿½ï¿½ï¿½Ô—Ê•Ïï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ü‚ï¿½ï¿½B
+//           ï¿½ï¿½ï¿½ÌŠÖï¿½ï¿½É‚ï¿½ï¿½oï¿½ï¿½ï¿½ï¿½ï¿½Xï¿½ï¿½ï¿½ï¿½@ï¿½\ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ê‡ï¿½ÍAï¿½ï¿½ï¿½ï¿½ï¿½Äï¿½ï¿½Eï¿½ï¿½
+//           ï¿½Ô—Ö‹ì“®ï¿½ï¿½ï¿½[ï¿½^ï¿½[ï¿½ÌƒGï¿½ï¿½ï¿½Rï¿½[ï¿½_ï¿½lï¿½ï¿½0ï¿½Éƒï¿½ï¿½Zï¿½bï¿½gï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½B
+// ï¿½gï¿½pï¿½ï¿½  :
+//		nxt_motor_set_speed(NXT_PORT_C, 0, 1); /* ï¿½ï¿½ï¿½ï¿½ï¿½[ï¿½^ï¿½ï¿½~ */
+//		nxt_motor_set_speed(NXT_PORT_B, 0, 1); /* ï¿½Eï¿½ï¿½ï¿½[ï¿½^ï¿½ï¿½~ */
+//		balance_init();						   /* NXTway-GSï¿½oï¿½ï¿½ï¿½ï¿½ï¿½Xï¿½ï¿½ï¿½ä‰ï¿½ï¿½ï¿½ï¿½ */
+//      /* ï¿½ï¿½ï¿½[ï¿½^ï¿½Gï¿½ï¿½ï¿½Rï¿½[ï¿½_ï¿½lï¿½ï¿½0ï¿½ï¿½ï¿½Zï¿½bï¿½gï¿½ï¿½ï¿½ï¿½Oï¿½Éƒï¿½ï¿½[ï¿½^ï¿½ï¿½ï¿½ï¿½~ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½é‚±ï¿½ï¿½ */
+//		nxt_motor_set_count(NXT_PORT_C, 0);    /* ï¿½ï¿½ï¿½ï¿½ï¿½[ï¿½^ï¿½Gï¿½ï¿½ï¿½Rï¿½[ï¿½_0ï¿½ï¿½ï¿½Zï¿½bï¿½g */
+//		nxt_motor_set_count(NXT_PORT_B, 0);    /* ï¿½Eï¿½ï¿½ï¿½[ï¿½^ï¿½Gï¿½ï¿½ï¿½Rï¿½[ï¿½_0ï¿½ï¿½ï¿½Zï¿½bï¿½g */
 //*****************************************************************************
 
 /* Model step function */
@@ -321,7 +321,7 @@ void balance_control(float args_cmd_forward, float args_cmd_turn, float
 
     /* user code (Update function Body) */
     /* System '<Root>' */
-    /* ŽŸ‰ñ‰‰ŽZ—pó‘Ô—Ê•Û‘¶ˆ— */
+    /* ï¿½ï¿½ï¿½ñ‰‰ŽZï¿½pï¿½ï¿½Ô—Ê•Û‘ï¿½ï¿½ï¿½ï¿½ï¿½ */
 
     /* Update for UnitDelay: '<S5>/Unit Delay' */
     ud_err_theta = tmp_pwm_r_limiter;
