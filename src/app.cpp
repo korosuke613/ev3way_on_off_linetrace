@@ -314,6 +314,9 @@ void bt_task(intptr_t unused)
 // 概要 : Bluetooth通信によるリモートスタート。 Tera Termなどのターミナルソフトから、
 //       ASCIIコードで1を送信すると、リモートスタートする。
 //*****************************************************************************
+#define LIGHT_WHITE  40         /* 白色の光センサ値 */
+#define LIGHT_BLACK  0          /* 黒色の光センサ値 */
+
 void setLineTracePwm(const int& brightness_, signed char& forward_, signed char& turn_){
     forward_ = 30; /* 前進命令 */
     if(brightness_ >= (LIGHT_WHITE + LIGHT_BLACK)/2){
