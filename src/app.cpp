@@ -311,13 +311,12 @@ void bt_task(intptr_t unused)
 // 　　 : forward_ : 前後進命令の変数
 // 　　 : turn_ : 旋回命令の変数
 // 返り値 : なし
-// 概要 : Bluetooth通信によるリモートスタート。 Tera Termなどのターミナルソフトから、
-//       ASCIIコードで1を送信すると、リモートスタートする。
+// 概要 : 前後進値、旋回値を設定する
 //*****************************************************************************
-#define LIGHT_WHITE  40         /* 白色の光センサ値 */
-#define LIGHT_BLACK  0          /* 黒色の光センサ値 */
-
 void setLineTracePwm(const int& brightness_, signed char& forward_, signed char& turn_){
+    constexpr int LIGHT_WHITE = 40; /* 白色の光センサ値 */
+    constexpr int LIGHT_BLACK = 0; /* 黒色の光センサ値 */
+    
     forward_ = 30; /* 前進命令 */
     if(brightness_ >= (LIGHT_WHITE + LIGHT_BLACK)/2){
         turn_ =  20; /* 左旋回命令 */
