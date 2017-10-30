@@ -28,6 +28,8 @@
 #define _debug(x)
 #endif
 
+#include "TurnControl.h"
+
 /**
  * センサー、モーターの接続を定義します
  */
@@ -49,7 +51,8 @@ static FILE     *bt = NULL;     /* Bluetoothファイルハンドル */
 static int sonar_alert(void);
 static void tail_control(signed int angle);
 void setLineTracePwm(const int& brightness_, signed char& forward_, signed char& turn_);
-    
+void setLineTracePwmWithPid(TurnControl &turnControl_, const int &brightness_, signed char &forward_, signed char &turn_);
+
 #include "BalancerCpp.h"        // <1>
 Balancer balancer;              // <1>
 
@@ -61,6 +64,7 @@ void main_task(intptr_t unused)
     signed char pwm_L, pwm_R; /* 左右モータPWM出力 */
     char msg[32];
     int brightness; /* 地面の明るさ */
+    TurnControl turnControl; /* turn値のPID制御用 */
 
     /* センサー入力ポートの設定 */
     ev3_sensor_config(sonar_sensor, ULTRASONIC_SENSOR);
@@ -161,7 +165,8 @@ void main_task(intptr_t unused)
         {
             brightness = ev3_color_sensor_get_reflect(color_sensor);            
 
-            setLineTracePwm(brightness, forward, turn); /* 前後進命令, 旋回命令の設定 */
+            //setLineTracePwm(brightness, forward, turn); /* 前後進命令, 旋回命令の設定 */
+            setLineTracePwmWithPid(turnControl, brightness, forward, turn); /* 前後進命令, 旋回命令の設定 */
 
             if(isSonerAlert == true)ev3_speaker_play_tone (NOTE_GS6, 100);            
             isSonerAlert = false;
@@ -324,4 +329,10 @@ void setLineTracePwm(const int& brightness_, signed char& forward_, signed char&
     }else{
         turn_ = -20; /* 右旋回命令 */
     }
+}
+
+void setLineTracePwmWithPid(TurnControl &turnControl_, const int &brightness_, signed char &forward_, signed char &turn_){
+
+    forward_ = 30;
+    turn_ = turnControl_.calculateTurnForPid(static_cast<std::int8_t>(forward_), static_cast<std::int8_t>(brightness_));
 }
