@@ -333,6 +333,7 @@ void setLineTracePwm(const int& brightness_, signed char& forward_, signed char&
 
 void setLineTracePwmWithPid(TurnControl &turnControl_, const int &brightness_, signed char &forward_, signed char &turn_){
 
-    forward_ = 30;
+    forward_ = 50;
+    turnControl_.setPid(4.0, 2.0, 0.09, 40);
     turn_ = turnControl_.calculateTurnForPid(static_cast<std::int8_t>(forward_), static_cast<std::int8_t>(brightness_));
 }
