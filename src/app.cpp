@@ -103,9 +103,11 @@ void main_task(intptr_t unused)
     while(1)
     {
         tail_control(TAIL_ANGLE_STAND_UP + buff); /* 完全停止用角度に制御 */
+        brightness = ev3_color_sensor_get_reflect(color_sensor); /* 光センサの値取得 */           
 
-        sprintf(msg, "Tail_Angle: %d", TAIL_ANGLE_STAND_UP + buff);
-        msg_f(msg, 0);  
+        /* LCDにしっぽの角度と光センサの値を出力する */
+        sprintf(msg, "Tail_Angle: %d, Brightness: %d", TAIL_ANGLE_STAND_UP + buff, brightness);
+        msg_f(msg, 0);
 
         if(ev3_button_is_pressed(LEFT_BUTTON)){
             buff--;
@@ -121,7 +123,6 @@ void main_task(intptr_t unused)
         {
             break; /* リモートスタート */
         }
-
         if (ev3_touch_sensor_is_pressed(touch_sensor) == 1)
         {
             break; /* タッチセンサが押された */
