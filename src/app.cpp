@@ -87,7 +87,8 @@ void main_task(intptr_t unused)
     memfile_t memfile_img;
     ev3_memfile_load("/ev3rt/res/katayama.bmp", &memfile_img);
     memfile_t memfile_wav;
-    ev3_memfile_load("/ev3rt/res/dorakue.wav", &memfile_wav);
+    ev3_memfile_load("/ev3rt/res/nogi.wav", &memfile_wav);
+    //ev3_memfile_load("/ev3rt/res/dorakue.wav", &memfile_wav);
     image_t image;
     ev3_image_load(&memfile_img, &image);
     ev3_lcd_draw_image(&image, 0, 0);
@@ -152,7 +153,7 @@ void main_task(intptr_t unused)
 
         if (sonar_alert() == 1) /* 障害物検知 */
         {
-            if(isSonerAlert == false)ev3_speaker_play_tone (NOTE_FS6, 100);
+            //if(isSonerAlert == false)ev3_speaker_play_tone (NOTE_FS6, 100);
             isSonerAlert = true;
             forward = turn = 0; /* 障害物を検知したら停止 */
         }
@@ -162,7 +163,7 @@ void main_task(intptr_t unused)
 
             setLineTracePwm(brightness, forward, turn); /* 前後進命令, 旋回命令の設定 */
 
-            if(isSonerAlert == true)ev3_speaker_play_tone (NOTE_GS6, 100);            
+            //if(isSonerAlert == true)ev3_speaker_play_tone (NOTE_GS6, 100);            
             isSonerAlert = false;
             /* LCDに光センサの明るさ値を出力する */
             //sprintf(msg, "Brightness: %d", brightness);
@@ -317,10 +318,10 @@ void setLineTracePwm(const int& brightness_, signed char& forward_, signed char&
     constexpr int LIGHT_WHITE = 40; /* 白色の光センサ値 */
     constexpr int LIGHT_BLACK = 0; /* 黒色の光センサ値 */
     
-    forward_ = 30; /* 前進命令 */
+    forward_ = 60; /* 前進命令 */
     if(brightness_ >= (LIGHT_WHITE + LIGHT_BLACK)/2){
-        turn_ =  20; /* 左旋回命令 */
+        turn_ =  30; /* 左旋回命令 */
     }else{
-        turn_ = -20; /* 右旋回命令 */
+        turn_ = -30; /* 右旋回命令 */
     }
 }
